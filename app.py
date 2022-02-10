@@ -12,6 +12,10 @@ HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'T
 @app.route('/', defaults={'all': ''}, methods=HTTP_METHODS)
 @app.route('/<path:all>')
 def catch_all(**kwargs):
+    path = request.path
+    if path == '/exploit.js':
+        with open('./exploit.js', 'r') as f:
+            return f.read()
     response = [
         f'{request.method} {request.full_path}',
         '\n'.join(str(i) for i in list(request.headers)),
