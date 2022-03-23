@@ -3,19 +3,43 @@ from flask import Flask, request
 import sys
 from threading import Thread
 from time import sleep
+# import session from flask
+from flask import session
+import json
 
 app = Flask(__name__)
 
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
 
+REPONSE_HEADER = {
+    'Content-Type': 'text/html; charset=utf-8',
+    'Connection': 'close',
+    'Server': 'not yours'
+}
 
-@app.route('/', defaults={'all': ''}, methods=HTTP_METHODS)
-@app.route('/<path:all>')
+
+@app.route('/', defaults={'path': ''}, methods=HTTP_METHODS)
+@app.route('/<path:path>')
 def catch_all(**kwargs):
-    path = request.path
-    if path == '/exploit.js':
-        with open('./exploit.js', 'r') as f:
-            return f.read()
+
+    j = {
+        'method': request.method,
+        'headers': dict(request.headers),
+        'cookies': dict(request.cookies),
+        'args': dict(request.args),
+        'form': dict(request.form),
+        'files': dict(request.files),
+        'json': dict(request.json) if request.json else None,
+        'remote_addr': request.remote_addr,
+        'remote_user': request.remote_user,
+        'url': request.url,
+        'base_url': request.base_url,
+        'url_root': request.url_root,
+        'is_secure': request.is_secure,
+        'is_json': request.is_json,
+        'data': str(request.data),
+    }
+
     response = [
         f'{request.method} {request.full_path}',
         '\n'.join(str(i) for i in list(request.headers)),
@@ -23,7 +47,7 @@ def catch_all(**kwargs):
         f'request.form: {request.form}',
         f'request.data: {request.data}',
     ]
-    print('\n'.join([str(i) for i in response]))
+    print(json.dumps(j))
     return '', 200
 
 
