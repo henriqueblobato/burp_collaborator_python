@@ -37,20 +37,20 @@ def catch_all(**kwargs):
         'is_json': request.is_json,
         'data': str(request.data),
     }
-    print(json.dumps(j))
+    app.logger.info(str(json.dumps(j)))
     return '', 100
 
 
 def runtime_dns(serv):
     while True:
         data, address = serv.recvfrom(1024)
-        print(f'DNS received from {address}: {data[2:].decode("utf-8")}')
+        app.logger.info(f'DNS received from {address}: {data[2:].decode("utf-8")}')
         sleep(.5)
 
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        port = 8181
+        port = 5000
     else:
         port = int(sys.argv[1])
 
