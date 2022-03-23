@@ -1,6 +1,6 @@
 FROM python:3.7
 
-MAINTAINER Your Name "iklobato1@gmail.com"
+MAINTAINER eu "iklobato1@gmail.com"
 
 RUN apt-get update -y && \
     apt-get install -y python-dev
