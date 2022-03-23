@@ -3,15 +3,13 @@ from flask import Flask, request
 import sys
 from threading import Thread
 from time import sleep
-# import session from flask
-from flask import session
 import json
 
 app = Flask(__name__)
 
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
 
-REPONSE_HEADER = {
+RESPONSE_HEADER = {
     'Content-Type': 'text/html; charset=utf-8',
     'Connection': 'close',
     'Server': 'not yours'
@@ -39,16 +37,8 @@ def catch_all(**kwargs):
         'is_json': request.is_json,
         'data': str(request.data),
     }
-
-    response = [
-        f'{request.method} {request.full_path}',
-        '\n'.join(str(i) for i in list(request.headers)),
-        f'request.args: {request.args}',
-        f'request.form: {request.form}',
-        f'request.data: {request.data}',
-    ]
     print(json.dumps(j))
-    return '', 200
+    return '', 100
 
 
 def runtime_dns(serv):
