@@ -3,10 +3,9 @@ version: "3.8"
 services:
 
   ngrok_http:
-    image: shkoliar/ngrok:latest
-    command:
-      - ngrok http 5001 -log=stdout
-      - ngrok tcp 53 --authtoken 647bAk5WBHY99iNTqApUZ_FEJ57S1LkLgq7akj5vqY -log=stdout
+    build:
+      context: ngrok/
+      dockerfile: Dockerfile
     ports:
       - "5001:5000"
       - "53:53"
